@@ -187,10 +187,15 @@ class HomeViewController: UIViewController
         
         navigationItem.leftBarButtonItem = logoImageButton
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "person")!.withTintColor(.white, renderingMode: .alwaysOriginal), style: .done, target: self, action: #selector(handleProfile)),UIBarButtonItem(image: UIImage(systemName: "play.rectangle")!.withTintColor(.white, renderingMode: .alwaysOriginal), style: .done, target: self, action: nil)
+            UIBarButtonItem(image: UIImage(systemName: "person")!.withTintColor(.white, renderingMode: .alwaysOriginal), style: .done, target: self, action: #selector(handleProfile)),UIBarButtonItem(image: UIImage(systemName: "play.rectangle")!.withTintColor(.white, renderingMode: .alwaysOriginal), style: .done, target: self , action: #selector(playbuttonnexttoprofile))
         ]
         
         //        navigationController?.navigationBar.tintColor = .white
+    }
+    
+    @objc func playbuttonnexttoprofile()
+    {
+        print("DEBUG:  PLAY")
     }
     
     
@@ -201,7 +206,7 @@ class HomeViewController: UIViewController
     
     @objc func handleProfile()
     {
-        
+         print("DEBUG: PROFILE")
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
