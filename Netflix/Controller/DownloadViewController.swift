@@ -21,6 +21,7 @@ class DownloadViewController: UIViewController {
         return tableview
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewControllerHeaderTitle(mytitle: "Downloads")
@@ -31,7 +32,13 @@ class DownloadViewController: UIViewController {
         DownloadMovies.dataSource = self
         NotificationCenter.default.addObserver(forName: NSNotification.Name(CollectionViewTableViewCell.NOTIFICATION_NAME), object: nil, queue: nil) { (_) in
             self.fetchLocalStorageFromDownload()
+           
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.fetchLocalStorageFromDownload()
+         self.DownloadMovies.reloadData()
     }
     
     override func viewDidLayoutSubviews() {

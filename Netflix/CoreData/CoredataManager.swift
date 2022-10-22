@@ -94,17 +94,5 @@ class CoredataManager
         
         
     }
-    
-    func saveDataItemIntoStorage(viewModel: TitleItems, completion: @escaping(Result<Void, Error>) -> Void)
-    {
-        
-        
-        guard let MyAppDelegate = UIApplication.shared.delegate as? AppDelegate else
-        {return}
-        
-        let Context = MyAppDelegate.persistentContainer.viewContext
-        
 
-        
-    }
 }

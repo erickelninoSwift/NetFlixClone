@@ -47,17 +47,17 @@ class HomeViewController: UIViewController
         
         Hometable.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
         view.backgroundColor = .systemBackground
-       configureHeader()
+        configureHeader()
         configureNavigationBar()
         AllMoviesType()
-
+        
     }
-
-
+    
+    
     func configureHeader()
     {
         headerViewImage = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
-        
+        headerViewImage?.delegate = self
         Hometable.tableHeaderView = headerViewImage
         configureHeaderViewRandome()
     }
@@ -122,47 +122,47 @@ class HomeViewController: UIViewController
     }
     
     fileprivate func upcoming()
-      {
-          APICaller.shared.getUpComingMovies { (Results) in
-              
-              switch Results
-              {
-              case .success(let movies):
-                  print(movies)
-              case .failure(let error):
-                  print(error.localizedDescription)
-              }
-          }
-      }
+    {
+        APICaller.shared.getUpComingMovies { (Results) in
+            
+            switch Results
+            {
+            case .success(let movies):
+                print(movies)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     
     fileprivate func toprated()
-      {
-          APICaller.shared.getAllTopratedMovies { (Results) in
-              
-              switch Results
-              {
-              case .success(let movies):
-                  print(movies)
-              case .failure(let error):
-                  print(error.localizedDescription)
-              }
-          }
-      }
+    {
+        APICaller.shared.getAllTopratedMovies { (Results) in
+            
+            switch Results
+            {
+            case .success(let movies):
+                print(movies)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     fileprivate func getAllpopular()
-      {
+    {
         APICaller.shared.getPopularMoview { (Results) in
-              
-              switch Results
-              {
-              case .success(let movies):
-                  print(movies)
-              case .failure(let error):
-                  print(error.localizedDescription)
-              }
-          }
-      }
+            
+            switch Results
+            {
+            case .success(let movies):
+                print(movies)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
     
     
@@ -190,7 +190,7 @@ class HomeViewController: UIViewController
             UIBarButtonItem(image: UIImage(systemName: "person")!.withTintColor(.white, renderingMode: .alwaysOriginal), style: .done, target: self, action: #selector(handleProfile)),UIBarButtonItem(image: UIImage(systemName: "play.rectangle")!.withTintColor(.white, renderingMode: .alwaysOriginal), style: .done, target: self, action: nil)
         ]
         
-//        navigationController?.navigationBar.tintColor = .white
+        //        navigationController?.navigationBar.tintColor = .white
     }
     
     
@@ -228,7 +228,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
             return UITableViewCell()
         }
-         
+        
         cell.delegate = self
         switch indexPath.section {
             
@@ -291,13 +291,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource
                 }
             }
             
-       
+            
         default:
             return UITableViewCell()
         }
-            
-             return cell
-        }
+        
+        return cell
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
@@ -307,7 +307,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource
         return 50
     }
     
-
+    
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
@@ -323,7 +323,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         Hometable.deselectRow(at: indexPath, animated: true)
-      
+        
     }
     
 }
@@ -349,6 +349,36 @@ extension HomeViewController: CollectionViewTableViewCellDelegate
             let vc = PreviewMoviesViewController()
             vc.configurationModel(with: previewModel)
             self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension HomeViewController: HeaderViewButtonPressedAction
+{
+    
+    func getbuttonPressed(currentViewController: HeroHeaderUIView, myButtonPressed: UIButton) {
+        guard let currenttitle = randomTrandingMoviews else {return}
+        
+        if myButtonPressed == currentViewController.playbutton
+        {
+            print("PLAY\(randomTrandingMoviews?.original_title ?? randomTrandingMoviews?.original_title ?? "")")
+            
+            guard let naviagtion = navigationController else {return}
+            
+            APICaller.shared.pressButtonToplayPreview(currenttitle: currenttitle, navigationController: naviagtion)
+        }else
+        {
+            print("Download \(randomTrandingMoviews?.original_title ?? randomTrandingMoviews?.original_title ?? "")")
+            
+            CoredataManager.shared.downloadTitle(viewmodel: currenttitle) { Results in
+                switch Results
+                {
+                case .success():
+                    print("DATA WAS SAVED")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
 }

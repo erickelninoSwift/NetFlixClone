@@ -216,6 +216,24 @@ class APICaller
               task.resume()
         
     }
+    
+    func pressButtonToplayPreview(currenttitle: Title , navigationController: UINavigationController)
+       {
+           APICaller.shared.getMoviesFromYoutube(with: currenttitle.original_name ?? currenttitle.original_title ?? "") {Results in
+               switch Results
+               {
+               case .success(let myAllVideos):
+                   DispatchQueue.main.async {
+                       let previewmHeaderViewmovie = PreviewMoviesViewController()
+                       previewmHeaderViewmovie.configurationModel(with: TitlepreviewModel(title: currenttitle.original_name ?? currenttitle.original_title ?? "", titleOverview: currenttitle.overview ?? "", CurrentMovie: myAllVideos))
+                       navigationController.pushViewController(previewmHeaderViewmovie, animated: true)
+                   }
+               case .failure(let error):
+                   print(error.localizedDescription)
+               }
+           }
+       }
+    
 }
 
 

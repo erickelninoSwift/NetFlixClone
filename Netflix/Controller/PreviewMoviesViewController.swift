@@ -108,7 +108,7 @@ class PreviewMoviesViewController: UIViewController {
         overviewLabel.text = myModel.titleOverview
         
         guard let url = URL(string: "https://www.youtube.com/embed/\(myModel.CurrentMovie.id.videoId)") else {return}
-        
+    
         WebPreview.load(URLRequest(url: url))
     }
 }

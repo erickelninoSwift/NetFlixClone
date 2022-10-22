@@ -9,10 +9,17 @@
 import UIKit
 import SDWebImage
 
+protocol HeaderViewButtonPressedAction: AnyObject {
+    func getbuttonPressed( currentViewController: HeroHeaderUIView , myButtonPressed: UIButton)
+}
+
 class HeroHeaderUIView: UIView {
     
     
-    private let playbutton: UIButton =
+    var delegate:HeaderViewButtonPressedAction?
+    
+    
+     let playbutton: UIButton =
     {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -20,11 +27,12 @@ class HeroHeaderUIView: UIView {
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 2
         button.widthAnchor.constraint(equalToConstant: 150).isActive = true
+       
         button.layer.cornerRadius = 3
         return button
     }()
     
-    private let downloadButton: UIButton =
+     let downloadButton: UIButton =
     {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +54,7 @@ class HeroHeaderUIView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        buttonActions()
         self.addSubview(heroImageView)
         addgradient()
         self.addSubview(playbutton)
@@ -91,6 +99,25 @@ class HeroHeaderUIView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    func buttonActions()
+    {
+        playbutton.addTarget(self, action: #selector(PlayHeaderMovie), for: .touchUpInside)
+        downloadButton.addTarget(self, action: #selector(DownloadMovieHeader), for: .touchUpInside)
+    }
+    
+//    HEADRER MOVIE PLAY BUTTON
+    
+    @objc func PlayHeaderMovie()
+    {
+        delegate?.getbuttonPressed(currentViewController: self, myButtonPressed: playbutton)
+    }
+    
+    @objc func DownloadMovieHeader()
+    {
+        delegate?.getbuttonPressed(currentViewController: self, myButtonPressed: downloadButton)
     }
     
 }

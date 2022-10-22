@@ -98,7 +98,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource
         }
         
         let listoftitle = TitleModel(url: AllTitles[indexPath.row].poster_path ?? "Unknown" , MovieTitle: AllTitles[indexPath.row].original_name ?? AllTitles[indexPath.row].original_title ?? "Unknown")
+        cell.playButton.isHidden = true
         cell.configureCellmodel(with: listoftitle)
+        
         return cell
     }
     
